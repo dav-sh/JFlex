@@ -2,24 +2,21 @@ package com.exercise.window;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 /**
  * Clase encargada de generar la ventana principal
  */
-public class Window extends JFrame{
+public class WResum extends JFrame{
     JPanel panel;
     JTextArea textArea;
     JButton btn;
-    JScrollPane scroll;
 
     /** 
      * Constructor de la ventana principal
      */
-    public Window(){
-        this.setTitle("Principal");
+    public WResum(){
+        this.setTitle("Resumen");
         init();
     }
 
@@ -31,30 +28,22 @@ public class Window extends JFrame{
         GridBagConstraints c = new GridBagConstraints();
 
         //text area
-        textArea = new JTextArea("Area de texto");
-        scroll = new JScrollPane(textArea);
+        textArea = new JTextArea("Area de texto 2");
         //pos x,y celd Oc x,y estira x,y
-        panel.add(scroll, constraints(0,0,2,2,1.0,1.0,GridBagConstraints.BOTH  ,c));
+        panel.add(textArea, constraints(0,0,2,2,1.0,1.0,GridBagConstraints.BOTH  ,c));
 
+        /*
         //evaluate button 
         btn = new JButton("Evaluar");
-        btn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new WResum();
-            }
-
-        });
-
         panel.add(btn, constraints(1,2,1,1,0.0,0.0,GridBagConstraints.NONE,c));
-
-
+        //panel.add(btn, c);
+        */
 
 
         this.setVisible(true);
         this.add(panel);
         this.setSize(400,400);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -73,6 +62,4 @@ public class Window extends JFrame{
         c.gridx = x; c.gridy = y; c.gridwidth = width; c.gridheight = height; c.weightx = weightx; c.weighty = weighty; c.fill = est;
         return c;
     }
-
-    
 }
