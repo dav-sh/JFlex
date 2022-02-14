@@ -41,7 +41,7 @@ public class Window extends JFrame{
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new WResum(textArea.getText());
+                new WResum(textArea);
             }
 
         });

@@ -4,6 +4,8 @@
 
 /*primer seccion: codigo de usuario*/
 package com.exercise.analizador;
+import java.util.ArrayList;
+
 
 // See https://github.com/jflex-de/jflex/issues/222
 @SuppressWarnings("FallThrough")
@@ -62,7 +64,10 @@ public class Analizador {
   private static final int [] ZZ_CMAP_BLOCKS = zzUnpackcmap_blocks();
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
-    "\101\0\1\1\37\0\1\1\u019e\0";
+    "\40\0\1\1\17\0\12\2\7\0\1\3\3\0\1\3"+
+    "\3\0\1\3\5\0\1\3\5\0\1\3\13\0\1\3"+
+    "\3\0\1\3\3\0\1\3\5\0\1\3\5\0\1\3"+
+    "\6\0\1\3\u0183\0";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[512];
@@ -89,10 +94,10 @@ public class Analizador {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\1\1\2\1\1";
+    "\1\0\1\1\1\2\1\3\1\4";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[3];
+    int [] result = new int[5];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -117,10 +122,10 @@ public class Analizador {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\2\0\4";
+    "\0\0\0\4\0\4\0\10\0\4";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[3];
+    int [] result = new int[5];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -143,10 +148,10 @@ public class Analizador {
   private static final int [] ZZ_TRANS = zzUnpackTrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\1\3\3\0\1\3";
+    "\1\2\1\3\1\4\1\5\6\0\1\4\1\0";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[6];
+    int [] result = new int[12];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -189,10 +194,10 @@ public class Analizador {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\1\1\11\1\1";
+    "\1\0\2\11\1\1\1\11";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[3];
+    int [] result = new int[5];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -269,14 +274,95 @@ public class Analizador {
   private boolean zzEOFDone;
 
   /* user code: */
-    private static int contador = 0;
-    private void increaseContador(){
-        contador ++;
+    private int countVowels = 0;
+    private int oneVowel = 0;
+    private int twoVowel = 0;
+    private int threeVowel = 0;
+    private int fourVowel = 0;
+    private int fiveVowel = 0;
+    private int spaces = 0;
+    private ArrayList<String> posicionF = new ArrayList<String>(); //guardar posicion
+
+
+    private void increaseCountVowels(){
+        countVowels ++;
     }
 
-    public static int getContador(){
-        return contador;
+    public int getCountVowels(){
+        return countVowels;
     }
+
+    private void increaseOneVowel(){
+        oneVowel ++;
+    }
+
+    public int getOneVowel(){
+        return oneVowel;
+    }
+
+    private void increaseTwoVowel(){
+        twoVowel ++;
+    }
+
+    public int getTwoVowel(){
+        return twoVowel;
+    }
+
+    private void increaseThreeVowel(){
+        threeVowel ++;
+    }
+
+    public int getThreeVowel(){
+        return threeVowel;
+    }
+
+    private void increaseFourVowel(){
+        fourVowel ++;
+    }
+
+    public int getFourVowel(){
+        return fourVowel;
+    }
+
+    private void increaseFiveVowel(){
+        fiveVowel ++;
+    }
+
+    public int getFiveVowel(){
+        return fiveVowel;
+    }
+
+    private void evaluateVowels(){
+        if(countVowels == 1){
+            increaseOneVowel();
+        }else if(countVowels == 2){
+            increaseTwoVowel();
+        }else if(countVowels == 3){
+            increaseThreeVowel();
+        }else if(countVowels == 4){
+            increaseFourVowel();
+        }else if(countVowels == 5){
+            increaseFiveVowel();
+        }
+    }
+
+    private void posDigits(){
+        posicionF.add("Fila: "+yyline + " Columna: "+ yycolumn);
+    }
+
+    public ArrayList<String> getPosDigits(){
+        return posicionF;
+    }
+
+
+    private void increaseSpaces(){
+        spaces ++;
+    }
+
+    private int getSpaces(){
+        return spaces;
+    }
+    
 
 
 
@@ -288,6 +374,8 @@ public class Analizador {
    * @param   in  the java.io.Reader to read input from.
    */
   public Analizador(java.io.Reader in) {
+    yyline =1;
+  yycolumn =1;
     this.zzReader = in;
   }
 
@@ -534,7 +622,7 @@ public class Analizador {
       zzEOFDone = true;
     
     /*codigo que se va a ejecutar al llegar al final del archivo*/
-    System.out.println("contador: " + getContador());
+    System.out.println("Espacios encontrador: "+getSpaces());
     }
   }
 
@@ -690,15 +778,25 @@ public class Analizador {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { increaseContador();
-            }
-            // fall through
-          case 3: break;
-          case 2:
             { 
             }
             // fall through
-          case 4: break;
+          case 5: break;
+          case 2:
+            { evaluateVowels();
+            }
+            // fall through
+          case 6: break;
+          case 3:
+            { posDigits();
+            }
+            // fall through
+          case 7: break;
+          case 4:
+            { increaseCountVowels();
+            }
+            // fall through
+          case 8: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

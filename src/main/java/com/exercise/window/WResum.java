@@ -21,26 +21,38 @@ public class WResum extends JFrame{
     JButton btn;
     DefaultTableModel model;
     JTable table;
+    Analizador analizador;
+
+
+
+
+
 
     /** 
      * Constructor de la ventana principal
      */
     Reader reader;
-    public WResum(String textIn){
+    public WResum(JTextArea textArea){
         this.setTitle("Resumen");
-        this.textIn = textIn;
+        this.textArea = textArea;
         init();
     }
+
+
+
+
 
     /** 
      * Metodo que inicializa los elementos de la ventana principal, asi como el analizador 
      */
     private void init() {
-        reader = new StringReader(textIn);
-        table = new JTable(5,2);
-        setData("Tipo",0,0);
-        setData("Cantidad",0,1);
-        Analizador analizador = new Analizador(reader);
+        String [] nameRows = {"Col1", "Col2"};
+        model = new DefaultTableModel(nameRows,0);
+        setData("Tipo","Cantidad",model);
+        reader = new StringReader(textArea.getText());
+        System.out.println("reader"+ textArea.getText());
+        table = new JTable(model);
+        analizador = new Analizador(reader);
 		try {
 			int salida = analizador.yylex();
             while(salida != Analizador.YYEOF){
@@ -48,28 +60,21 @@ public class WResum extends JFrame{
     
             }
             //Aqui se imprimen los datos en el text area
-            //addRow("Vocal", "C:"+salida);
-            System.out.println( "contador: "+ Analizador.getContador()  ); 
+            setData("1 vocal","Cantidad"+ analizador.getOneVowel()+"" ,model);
+            setData("2 vocales","Cantidad"+ analizador.getTwoVowel()+"" ,model);
+            setData("3 vocales","Cantidad" +analizador.getThreeVowel()+"",model);
+            setData("4 vocales","Cantidad"+analizador.getFourVowel()+"",model);
+            setData("5 vocales","Cantidad"+analizador.getFiveVowel()+"",model);
+            for(int i=0; i< analizador.getPosDigits().size(); i++){
+                setData("numero en pos: ", analizador.getPosDigits().get(i), model);
+            }
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
             System.out.println("Atrape el error");
 		}
         
-        panel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-
-        //text area
-        //textArea = new JTextArea("");
-        //pos x,y celd Oc x,y estira x,y
-        panel.add(table, constraints(0,0,2,2,1.0,1.0,GridBagConstraints.BOTH  ,c));
-
-        /*
-        //evaluate button 
-        btn = new JButton("Evaluar");
-        panel.add(btn, constraints(1,2,1,1,0.0,0.0,GridBagConstraints.NONE,c));
-        //panel.add(btn, c);
-        */
+        panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.add(table);
 
 
         this.setVisible(true);
@@ -78,26 +83,12 @@ public class WResum extends JFrame{
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
-    /**
-     * Metodo que sirve para definir la posicion y ancho de los elementos de la ventana
-     * @param x posicion en x
-     * @param y posicion en y
-     * @param width numero de celdas que se estira en x
-     * @param height numero de celdas que se estira en y
-     * @param weightx indica si se estira en x
-     * @param weighty indica si se estira en y
-     * @param est definimos la direccion en la cual se estira
-     * @param c constante g del layout
-     * @return el valor de las caracteristicas del elemento
-     */
-    private GridBagConstraints constraints(int x,int y, int width,int height, double weightx , double weighty, int est ,GridBagConstraints c){
-        c.gridx = x; c.gridy = y; c.gridwidth = width; c.gridheight = height; c.weightx = weightx; c.weighty = weighty; c.fill = est;
-        return c;
-    }
 
 
 
-    private void setData(String tipo, int fila, int columna){
-        table.setValueAt(tipo, fila, columna);
+
+
+    private void setData(String tipo, String cantidad, DefaultTableModel model){
+        model.addRow(new Object[]{tipo, cantidad});
     }
 }
