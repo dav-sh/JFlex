@@ -66,7 +66,7 @@ public class WResum extends JFrame{
             setData("4 vocales","Cantidad"+analizador.getFourVowel()+"",model);
             setData("5 vocales","Cantidad"+analizador.getFiveVowel()+"",model);
             for(int i=0; i< analizador.getPosDigits().size(); i++){
-                setData("numero en pos: ", analizador.getPosDigits().get(i), model);
+                setData("INT: ", analizador.getPosDigits().get(i), model);
             }
 		} catch (IOException e1) {
 			e1.printStackTrace();

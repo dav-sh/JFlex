@@ -347,7 +347,7 @@ public class Analizador {
     }
 
     private void posDigits(){
-        posicionF.add("Fila: "+yyline + " Columna: "+ yycolumn);
+        posicionF.add("F: "+yyline + " C: "+ yycolumn);
     }
 
     public ArrayList<String> getPosDigits(){
