@@ -1,7 +1,13 @@
 package com.exercise.window;
 
 import javax.swing.*;
+
+import com.exercise.analizador.Analizador;
+
 import java.awt.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 
 
 /**
@@ -10,13 +16,16 @@ import java.awt.*;
 public class WResum extends JFrame{
     JPanel panel;
     JTextArea textArea;
+    String textIn;
     JButton btn;
 
     /** 
      * Constructor de la ventana principal
      */
-    public WResum(){
+    Reader reader;
+    public WResum(String textIn){
         this.setTitle("Resumen");
+        this.textIn = textIn;
         init();
     }
 
@@ -24,11 +33,26 @@ public class WResum extends JFrame{
      * Metodo que inicializa los elementos de la ventana principal
      */
     private void init() {
+        reader = new StringReader(textIn);
+        Analizador analizador = new Analizador(reader);
+		try {
+			int salida = analizador.yylex();
+            while(salida != Analizador.YYEOF){
+                analizador.yylex();
+    
+            }
+            System.out.println( "contador: "+ Analizador.getContador()  ); 
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+            System.out.println("Atrape el error");
+		}
+        
         panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
         //text area
-        textArea = new JTextArea("Area de texto 2");
+        textArea = new JTextArea("");
         //pos x,y celd Oc x,y estira x,y
         panel.add(textArea, constraints(0,0,2,2,1.0,1.0,GridBagConstraints.BOTH  ,c));
 
