@@ -1,6 +1,7 @@
 package com.exercise.window;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import com.exercise.analizador.Analizador;
 
@@ -18,6 +19,8 @@ public class WResum extends JFrame{
     JTextArea textArea;
     String textIn;
     JButton btn;
+    DefaultTableModel model;
+    JTable table;
 
     /** 
      * Constructor de la ventana principal
@@ -30,10 +33,13 @@ public class WResum extends JFrame{
     }
 
     /** 
-     * Metodo que inicializa los elementos de la ventana principal
+     * Metodo que inicializa los elementos de la ventana principal, asi como el analizador 
      */
     private void init() {
         reader = new StringReader(textIn);
+        table = new JTable(5,2);
+        setData("Tipo",0,0);
+        setData("Cantidad",0,1);
         Analizador analizador = new Analizador(reader);
 		try {
 			int salida = analizador.yylex();
@@ -41,6 +47,8 @@ public class WResum extends JFrame{
                 analizador.yylex();
     
             }
+            //Aqui se imprimen los datos en el text area
+            //addRow("Vocal", "C:"+salida);
             System.out.println( "contador: "+ Analizador.getContador()  ); 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -52,9 +60,9 @@ public class WResum extends JFrame{
         GridBagConstraints c = new GridBagConstraints();
 
         //text area
-        textArea = new JTextArea("");
+        //textArea = new JTextArea("");
         //pos x,y celd Oc x,y estira x,y
-        panel.add(textArea, constraints(0,0,2,2,1.0,1.0,GridBagConstraints.BOTH  ,c));
+        panel.add(table, constraints(0,0,2,2,1.0,1.0,GridBagConstraints.BOTH  ,c));
 
         /*
         //evaluate button 
@@ -85,5 +93,11 @@ public class WResum extends JFrame{
     private GridBagConstraints constraints(int x,int y, int width,int height, double weightx , double weighty, int est ,GridBagConstraints c){
         c.gridx = x; c.gridy = y; c.gridwidth = width; c.gridheight = height; c.weightx = weightx; c.weighty = weighty; c.fill = est;
         return c;
+    }
+
+
+
+    private void setData(String tipo, int fila, int columna){
+        table.setValueAt(tipo, fila, columna);
     }
 }
